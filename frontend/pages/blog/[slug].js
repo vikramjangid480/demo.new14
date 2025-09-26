@@ -7,7 +7,7 @@ import { Calendar, Eye, Tag, ExternalLink, ChevronRight, Share2, Twitter, Facebo
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { blogAPI, utils } from '../../utils/api'
-import { DEFAULT_IMAGES, getImageUrl } from '../../utils/constants'
+import { DEFAULT_IMAGES, getImageUrl, handleImageError } from '../../utils/constants'
 
 // Use SSR for blog posts to avoid build issues
 export async function getServerSideProps({ params }) {
@@ -335,9 +335,7 @@ function BlogDetailPage({ initialBlog = null, relatedArticles = [] }) {
                     alt={blog.title}
                     fill
                     className="object-cover transition-transform duration-300 hover:scale-105"
-                    onError={(e) => {
-                      e.target.style.display = 'none'
-                    }}
+                    onError={(e) => handleImageError(e, DEFAULT_IMAGES.ARTICLE_THUMBNAIL)}
                   />
                 </div>
                 <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg relative">
@@ -346,9 +344,7 @@ function BlogDetailPage({ initialBlog = null, relatedArticles = [] }) {
                     alt={`${blog.title} - Image 2`}
                     fill
                     className="object-cover transition-transform duration-300 hover:scale-105"
-                    onError={(e) => {
-                      e.target.style.display = 'none'
-                    }}
+                    onError={(e) => handleImageError(e, DEFAULT_IMAGES.ARTICLE_THUMBNAIL)}
                   />
                 </div>
               </div>

@@ -230,7 +230,7 @@ function getBlogBySlug($db, $slug) {
 function formatBlog($blog) {
     if (!$blog) return $blog;
     
-    // Filter out external URLs for featured images (only allow uploaded images)
+    // Get featured images and convert to full URLs
     $featured_image = $blog['featured_image'];
     $featured_image_2 = isset($blog['featured_image_2']) ? $blog['featured_image_2'] : null;
     
@@ -241,6 +241,10 @@ function formatBlog($blog) {
     if ($featured_image_2 && strpos($featured_image_2, 'http') === 0 && strpos($featured_image_2, '/uploads/') === false) {
         $featured_image_2 = null;
     }
+    
+    // Convert to full URLs
+    $featured_image = getFullImageUrl($featured_image);
+    $featured_image_2 = getFullImageUrl($featured_image_2);
     
     return [
         'id' => (int)$blog['id'],

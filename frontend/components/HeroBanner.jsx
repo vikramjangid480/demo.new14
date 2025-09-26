@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getImageUrl, DEFAULT_IMAGES, handleImageError } from '../utils/imageUtils'
 
 const HeroBanner = ({ banners = [] }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -13,7 +14,7 @@ const HeroBanner = ({ banners = [] }) => {
       id: 1,
       title: 'Welcome to Boganto',
       subtitle: 'Upload your own banners from the admin panel!',
-      image_url: '/uploads/default-banner.jpg',
+      image_url: DEFAULT_IMAGES.HERO_BANNER,
       link_url: '/blog'
     }
   ]
@@ -57,7 +58,7 @@ const HeroBanner = ({ banners = [] }) => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src={currentBanner.image_url.startsWith('http') ? currentBanner.image_url : `http://localhost:8000/uploads/${currentBanner.image_url.replace(/^.*[\\/]/, '')}`}
+          src={getImageUrl(currentBanner.image_url, DEFAULT_IMAGES.HERO_BANNER)}
           alt={currentBanner.title}
           fill
           className="object-cover transition-opacity duration-500"
@@ -65,6 +66,7 @@ const HeroBanner = ({ banners = [] }) => {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
           quality={85}
           loading="eager"
+          onError={(e) => handleImageError(e, DEFAULT_IMAGES.HERO_BANNER)}
         />
         <div className="absolute inset-0 hero-section"></div>
       </div>

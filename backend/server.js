@@ -51,7 +51,7 @@ const mockBlogs = [
     slug: 'sakamoto-days-vol-1',
     content: '<h2>Plot Summary</h2><p>Taro Sakamoto was once a legendary hit man considered the greatest of all time...</p>',
     excerpt: 'The legendary hitman turned family man faces his past in this action-packed manga',
-    featured_image: '/uploads/1758533654_naruto.webp',
+    featured_image: 'http://localhost:8000/uploads/1758533654_naruto.webp',
     featured_image_2: null,
     category_id: 1,
     category_name: 'Fiction',

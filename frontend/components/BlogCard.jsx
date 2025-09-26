@@ -3,15 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Eye, Tag } from 'lucide-react'
 import { utils } from '../utils/api'
+import { getImageUrl, DEFAULT_IMAGES, handleImageError } from '../utils/imageUtils'
 
 const BlogCard = ({ blog, featured = false }) => {
-  // Get image URL from uploads directory
-  const getImageUrl = (img) => {
-    if (!img) return '';
-    if (img.startsWith('http')) return img;
-    const filename = img.split('/').pop();
-    return `http://localhost:8000/uploads/${filename}`;
-  }
 
   return (
     <div className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 transform hover:-translate-y-1">
@@ -19,13 +13,11 @@ const BlogCard = ({ blog, featured = false }) => {
       <div className="relative h-48 overflow-hidden">
         {blog.featured_image ? (
           <Image
-            src={getImageUrl(blog.featured_image)}
+            src={getImageUrl(blog.featured_image, DEFAULT_IMAGES.ARTICLE_THUMBNAIL)}
             alt={blog.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={(e) => {
-              e.target.style.display = 'none'
-            }}
+            onError={(e) => handleImageError(e, DEFAULT_IMAGES.ARTICLE_THUMBNAIL)}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">

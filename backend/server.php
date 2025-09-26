@@ -86,14 +86,32 @@ if ($uri === '/api/blogs' ||
         break;
     
     default:
-        // Check if it's a static file request
+        // Check if it's a static file request from uploads directory
         if (preg_match('/\/uploads\/(.+)/', $uri, $matches)) {
             $filePath = __DIR__ . '/../uploads/' . $matches[1];
             if (file_exists($filePath)) {
                 $mimeType = mime_content_type($filePath);
+                
+                // Set proper headers for images
                 header("Content-Type: $mimeType");
                 header("Cache-Control: public, max-age=31536000");
+                header("Access-Control-Allow-Origin: *");
+                header("Access-Control-Allow-Methods: GET, OPTIONS");
+                header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+                
+                // Handle OPTIONS request for CORS preflight
+                if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+                    http_response_code(200);
+                    exit();
+                }
+                
                 readfile($filePath);
+                exit();
+            } else {
+                // File not found in uploads
+                http_response_code(404);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Image not found: ' . $matches[1]]);
                 exit();
             }
         }

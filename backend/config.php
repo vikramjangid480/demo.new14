@@ -85,4 +85,28 @@ function uploadFile($file, $upload_dir = '../uploads/') {
     
     return false;
 }
+
+// Helper function to convert relative image paths to full URLs
+function getFullImageUrl($imagePath) {
+    if (!$imagePath) {
+        return null;
+    }
+    
+    // If it's already a full URL, return as-is
+    if (strpos($imagePath, 'http') === 0) {
+        return $imagePath;
+    }
+    
+    // If it's a relative path to uploads, convert to full URL
+    if (strpos($imagePath, '/uploads/') === 0) {
+        return 'http://localhost:8000' . $imagePath;
+    }
+    
+    // If it's just a filename, assume it's in uploads
+    if (strpos($imagePath, '/') === false) {
+        return 'http://localhost:8000/uploads/' . $imagePath;
+    }
+    
+    return $imagePath;
+}
 ?>
